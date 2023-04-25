@@ -1,0 +1,12 @@
+cbm_hbi_hbi                                       07-Feb-2023 18:17:55
+Running hierarchical bayesian inference (HBI)...
+
+HBI has been initialized according to
+	lap_BBNew1Eta_LDOPA.mat [for model 1]
+	lap_BBOneLik_LDOPA.mat [for model 2]
+	lap_BBOneUnc_LDOPA.mat [for model 3]
+ 
+Number of samples: 27
+Number of models: 3
+======================================================================
+Iteration 01
