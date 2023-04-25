@@ -629,120 +629,7 @@ summary(lme4::lmer(scale(HIsim) ~ Sess + Dictator + (1|ID), data = genOut))
 summary(lme4::lmer(scale(SIsim) ~ Sess + Dictator + (1|ID), data = genOut))
 
 # Analyse individual level parameters -------------------------------------
-
-dens1 <- ggplot(filtered_parms, aes(1/(1+exp(-pHI0)), 1/(1+exp(-pSI0))))+
-  geom_density2d_filled(alpha = 0.7, show.legend = F)+
-  geom_point(aes(shape = Sess, group = Sess, colour = Sess), size = 3)+
-  labs(x = expression(paste(pHI[0])), y =  expression(paste(pSI[0])))+
-  #scale_y_continuous(expand = c(0, 0))+
-  #scale_x_continuous(expand = c(0, 0))+
-  coord_cartesian(clip = 'off')+
-  guides(color = guide_legend(override.aes = list(size = 5)))+
-  scale_colour_manual(values = c('black', 'grey', 'white'))+
-  theme_dens()+
-  theme(legend.position = c(0.75, 0.2),
-        panel.grid = element_blank(),
-        panel.border = element_blank())
-
-dens1
-ggExtra::ggMarginal(
-  p = dens1,
-  type = 'histogram',
-  margins = 'both',
-  size = 4,
-  colour = 'black',
-  groupFill = TRUE
-)
-
-dens2 <- ggplot(filtered_parms, aes(1/(1+exp(-pHI0)), 1/(1+exp(-pi))))+
-  geom_density2d_filled(alpha = 0.7, show.legend = F)+
-  geom_point(aes(shape = Sess, group = Sess, colour = Sess), size = 3)+
-  labs(x = expression(paste(pHI[0])), y = expression(paste('u', pi)))+
-  #scale_y_continuous(expand = expansion(mult = c(0, 0)))+
-  #scale_x_continuous(expand = expansion(mult = c(0, 0)))+
-  coord_cartesian(clip = 'off')+
-  guides(color = guide_legend(override.aes = list(size = 5)))+
-  scale_colour_manual(values = c('black', 'grey', 'white'))+
-  theme_dens()+
-  theme(panel.grid = element_blank(),
-        panel.border = element_blank())
-
-ggExtra::ggMarginal(
-  p = dens2,
-  type = 'histogram',
-  margins = 'both',
-  size = 4,
-  colour = 'black',
-  groupFill = TRUE
-)
-
-dens3 <- ggplot(filtered_parms, aes(1/(1+exp(-pSI0)), 1/(1+exp(-pi))))+
-  geom_density2d_filled(alpha = 0.7, show.legend = F)+
-  geom_point(aes(shape = Sess, group = Sess, colour = Sess), size = 3)+
-  labs(x = expression(paste(pSI[0])), y = expression(paste('u', pi)))+
-  #scale_y_continuous(expand = expansion(mult = c(0, 0)))+
-  #scale_x_continuous(expand = expansion(mult = c(0, 0)))+
-  coord_cartesian(clip = 'off')+
-  guides(color = guide_legend(override.aes = list(size = 5)))+
-  scale_colour_manual(values = c('black', 'grey', 'white'))+
-  theme_dens()+
-  theme(panel.grid = element_blank(),
-        panel.border = element_blank())
-
-ggExtra::ggMarginal(
-  p = dens3,
-  type = 'histogram',
-  margins = 'both',
-  size = 4,
-  colour = 'black',
-  groupFill = TRUE
-)
-
-dens4 <- ggplot(filtered_parms, aes(1/(1+exp(-eta)), 1/(1+exp(-pi))))+
-  geom_density2d_filled(alpha = 0.7, show.legend = F)+
-  geom_point(aes(shape = Sess, group = Sess, colour = Sess), size = 3)+
-  labs(x = expression(paste(eta)), y = expression(paste('u',pi)))+
-  #scale_y_continuous(expand = expansion(mult = c(0, 0)))+
-  #scale_x_continuous(expand = expansion(mult = c(0, 0)))+
-  coord_cartesian(clip = 'off')+
-  guides(color = guide_legend(override.aes = list(size = 5)))+
-  scale_colour_manual(values = c('black', 'grey', 'white'))+
-  theme_dens()+
-  theme(panel.grid = element_blank(),
-        panel.border = element_blank())
-
-ggExtra::ggMarginal(
-  p = dens4,
-  type = 'histogram',
-  margins = 'both',
-  size = 4,
-  colour = 'black',
-  groupFill = TRUE
-)
-
-dens5 <- ggplot(filtered_parms, aes(w0, 1/(1+exp(-pi))))+
-  geom_density2d_filled(alpha = 0.7, show.legend = F)+
-  geom_point(aes(shape = Sess, group = Sess, colour = Sess), size = 3)+
-  labs(x = expression(paste(w[0])), y = expression(paste('u',pi)))+
-  #scale_y_continuous(expand = expansion(mult = c(0, 0)))+
-  #scale_x_continuous(expand = expansion(mult = c(0, 0)))+
-  coord_cartesian(clip = 'off')+
-  guides(color = guide_legend(override.aes = list(size = 5)))+
-  scale_colour_manual(values = c('black', 'grey', 'white'))+
-  theme_dens()+
-  theme(panel.grid = element_blank(),
-        panel.border = element_blank())
-
-ggExtra::ggMarginal(
-  p = dens5,
-  type = 'histogram',
-  margins = 'both',
-  size = 4,
-  colour = 'black',
-  groupFill = TRUE
-)
-
-# Bayesian ttests ---------------------------------------------------------
+## Bayesian ttests ---------------------------------------------------------
 
 bayes_list <- c('upi3', 'eta3', 'pSI03', 'pHI03', 'w03', 'wHI3', 'wSI3', 'uSIHI03')
 library(BayesianFirstAid)
@@ -823,34 +710,7 @@ ggplot(ggmcmc,
         axis.title.x = element_blank(),
         legend.background = element_rect(colour = 'black'))
 
-#EFFECT SIZE
-ggplot(ggmcmc,
-       aes(reorder(parameter, eff_size), eff_size, fill = sig))+
-  geom_hline(yintercept = 0, alpha = 0.5)+
-  geom_hline(yintercept = c(-0.095, 0.095), alpha = 0.5, linetype = 2)+
-  tidybayes::stat_dist_slabinterval()+
-  scale_fill_manual(values = c('#BA2D0B', 'grey'), name = 'HDI (95%) \nCrosses \nZero')+
-  scale_colour_manual(values = c('#BA2D0B', 'grey'), name = 'HDI \nCrosses \nZero')+
-  coord_cartesian(ylim = c(-1, 3))+
-  scale_x_discrete(labels = c(
-                              expression(paste(u[Pri])),
-                              expression(paste(pHI[0])),
-                              expression(paste(w['SI'])),
-                              expression(paste(u[pi])),
-                              expression(paste(w[0])),
-                              expression(paste(pSI[0])),
-                              expression(paste(eta)),
-                              expression(paste(w['HI']))
-                              )
-                              )+
-  labs(y = "Cohen's d")+
-  theme_bw()+
-  theme(legend.position = c(0.25, 0.75),
-        text = element_text(size = 24),
-        axis.title.x = element_blank(),
-        legend.background = element_rect(colour = 'black'))
-
-# WHI simulation -------------------------------------------------------
+## WHI simulation -------------------------------------------------------
 
 # Load the data below for reproducibility, or simulate novel data
 # using the below parallel loop
@@ -1044,7 +904,7 @@ wSIplot <- ggplot(out3a %>%
 
 wHIplot + w0plot + wSIplot
 
-# Coupling analysis -------------------------------------------------------
+## Coupling analysis -------------------------------------------------------
 
 genOut$residHI  <- summary(lme4::lmer(HIsim  ~ Dictator + (1|Sess), data = genOut))[[16]] %>% as.vector()
 genOut$residSI  <- summary(lme4::lmer(SIsim  ~ Dictator + (1|Sess), data = genOut))[[16]] %>% as.vector()
@@ -1125,7 +985,126 @@ summary(BBinx)
 confint(BBinx)
 effectsize::effectsize(BBinx)
 
-# Supplementary Materials 2 -----------------------------------------------
+
+# Supplementary Materials -------------------------------------------------
+
+
+## S1 ----------------------------------------------------------------------
+
+dens1 <- ggplot(filtered_parms, aes(1/(1+exp(-pHI0)), 1/(1+exp(-pSI0))))+
+  geom_density2d_filled(alpha = 0.7, show.legend = F)+
+  geom_point(aes(shape = Sess, group = Sess, colour = Sess), size = 3)+
+  labs(x = expression(paste(pHI[0])), y =  expression(paste(pSI[0])))+
+  #scale_y_continuous(expand = c(0, 0))+
+  #scale_x_continuous(expand = c(0, 0))+
+  coord_cartesian(clip = 'off')+
+  guides(color = guide_legend(override.aes = list(size = 5)))+
+  scale_colour_manual(values = c('black', 'grey', 'white'))+
+  theme_dens()+
+  theme(legend.position = c(0.75, 0.2),
+        panel.grid = element_blank(),
+        panel.border = element_blank())
+
+dens1
+ggExtra::ggMarginal(
+  p = dens1,
+  type = 'histogram',
+  margins = 'both',
+  size = 4,
+  colour = 'black',
+  groupFill = TRUE
+)
+
+dens2 <- ggplot(filtered_parms, aes(1/(1+exp(-pHI0)), 1/(1+exp(-pi))))+
+  geom_density2d_filled(alpha = 0.7, show.legend = F)+
+  geom_point(aes(shape = Sess, group = Sess, colour = Sess), size = 3)+
+  labs(x = expression(paste(pHI[0])), y = expression(paste('u', pi)))+
+  #scale_y_continuous(expand = expansion(mult = c(0, 0)))+
+  #scale_x_continuous(expand = expansion(mult = c(0, 0)))+
+  coord_cartesian(clip = 'off')+
+  guides(color = guide_legend(override.aes = list(size = 5)))+
+  scale_colour_manual(values = c('black', 'grey', 'white'))+
+  theme_dens()+
+  theme(panel.grid = element_blank(),
+        panel.border = element_blank())
+
+ggExtra::ggMarginal(
+  p = dens2,
+  type = 'histogram',
+  margins = 'both',
+  size = 4,
+  colour = 'black',
+  groupFill = TRUE
+)
+
+dens3 <- ggplot(filtered_parms, aes(1/(1+exp(-pSI0)), 1/(1+exp(-pi))))+
+  geom_density2d_filled(alpha = 0.7, show.legend = F)+
+  geom_point(aes(shape = Sess, group = Sess, colour = Sess), size = 3)+
+  labs(x = expression(paste(pSI[0])), y = expression(paste('u', pi)))+
+  #scale_y_continuous(expand = expansion(mult = c(0, 0)))+
+  #scale_x_continuous(expand = expansion(mult = c(0, 0)))+
+  coord_cartesian(clip = 'off')+
+  guides(color = guide_legend(override.aes = list(size = 5)))+
+  scale_colour_manual(values = c('black', 'grey', 'white'))+
+  theme_dens()+
+  theme(panel.grid = element_blank(),
+        panel.border = element_blank())
+
+ggExtra::ggMarginal(
+  p = dens3,
+  type = 'histogram',
+  margins = 'both',
+  size = 4,
+  colour = 'black',
+  groupFill = TRUE
+)
+
+dens4 <- ggplot(filtered_parms, aes(1/(1+exp(-eta)), 1/(1+exp(-pi))))+
+  geom_density2d_filled(alpha = 0.7, show.legend = F)+
+  geom_point(aes(shape = Sess, group = Sess, colour = Sess), size = 3)+
+  labs(x = expression(paste(eta)), y = expression(paste('u',pi)))+
+  #scale_y_continuous(expand = expansion(mult = c(0, 0)))+
+  #scale_x_continuous(expand = expansion(mult = c(0, 0)))+
+  coord_cartesian(clip = 'off')+
+  guides(color = guide_legend(override.aes = list(size = 5)))+
+  scale_colour_manual(values = c('black', 'grey', 'white'))+
+  theme_dens()+
+  theme(panel.grid = element_blank(),
+        panel.border = element_blank())
+
+ggExtra::ggMarginal(
+  p = dens4,
+  type = 'histogram',
+  margins = 'both',
+  size = 4,
+  colour = 'black',
+  groupFill = TRUE
+)
+
+dens5 <- ggplot(filtered_parms, aes(w0, 1/(1+exp(-pi))))+
+  geom_density2d_filled(alpha = 0.7, show.legend = F)+
+  geom_point(aes(shape = Sess, group = Sess, colour = Sess), size = 3)+
+  labs(x = expression(paste(w[0])), y = expression(paste('u',pi)))+
+  #scale_y_continuous(expand = expansion(mult = c(0, 0)))+
+  #scale_x_continuous(expand = expansion(mult = c(0, 0)))+
+  coord_cartesian(clip = 'off')+
+  guides(color = guide_legend(override.aes = list(size = 5)))+
+  scale_colour_manual(values = c('black', 'grey', 'white'))+
+  theme_dens()+
+  theme(panel.grid = element_blank(),
+        panel.border = element_blank())
+
+ggExtra::ggMarginal(
+  p = dens5,
+  type = 'histogram',
+  margins = 'both',
+  size = 4,
+  colour = 'black',
+  groupFill = TRUE
+)
+
+
+## S2 -----------------------------------------------
 
 cor1 <- ggplot(filtered_parms,
        aes(1/(1+exp(-pHI0)), 1/(1+exp(-pSI0)), fill = Sess))+
@@ -1182,7 +1161,7 @@ cor5 <- ggplot(filtered_parms,
 
 cor5
 
-# Trial wise policy simulations -------------------------------------------
+## S4 -------------------------------------------
 
 s4a <- ggplot(out3a %>%
          group_by(trial, wHI) %>%
@@ -1296,7 +1275,85 @@ s4f <- ggplot(out3a %>%
         legend.title = element_text(size = 24, face = 'bold'))
 
 
-# Simulate policy maps ----------------------------------------------------
+## S5 ----------------------------------------------------------------------
+
+#EFFECT SIZE
+ggplot(ggmcmc,
+       aes(reorder(parameter, eff_size), eff_size, fill = sig))+
+  geom_hline(yintercept = 0, alpha = 0.5)+
+  geom_hline(yintercept = c(-0.095, 0.095), alpha = 0.5, linetype = 2)+
+  tidybayes::stat_dist_slabinterval()+
+  scale_fill_manual(values = c('#BA2D0B', 'grey'), name = 'HDI (95%) \nCrosses \nZero')+
+  scale_colour_manual(values = c('#BA2D0B', 'grey'), name = 'HDI \nCrosses \nZero')+
+  coord_cartesian(ylim = c(-1, 3))+
+  scale_x_discrete(labels = c(
+                              expression(paste(u[Pri])),
+                              expression(paste(pHI[0])),
+                              expression(paste(w['SI'])),
+                              expression(paste(u[pi])),
+                              expression(paste(w[0])),
+                              expression(paste(pSI[0])),
+                              expression(paste(eta)),
+                              expression(paste(w['HI']))
+                              )
+                              )+
+  labs(y = "Cohen's d")+
+  theme_bw()+
+  theme(legend.position = c(0.25, 0.75),
+        text = element_text(size = 24),
+        axis.title.x = element_blank(),
+        legend.background = element_rect(colour = 'black'))
+
+## S6  -------------------------------------------------------
+
+
+w0wHIplot_dens <- ggplot(out3a %>%
+         group_by(w0, wHI, Dictator) %>%
+         mutate(`Harmful Intent` = 1/var(HIsim)) %>%
+         ungroup() %>%
+         select(w0, `Harmful Intent`, wHI, Dictator) %>%
+         distinct(),
+       aes(w0, wHI, fill = `Harmful Intent`))+
+  geom_tile()+
+  scale_fill_gradient2(midpoint = 121, low = '#008148', mid = 'white', high = '#F85E00', name = expression(paste(1/sigma^2)))+
+  scale_y_continuous(expand = c(0, 0))+
+  scale_x_continuous(expand = c(0, 0))+
+  labs(x = expression(paste(w[0])), y = expression(paste(w[HI])))+
+  coord_cartesian(clip = 'off')+
+  facet_wrap(~Dictator)+
+  theme_dens()+
+  theme(legend.position = 'top',
+        panel.grid = element_blank(),
+        legend.text = element_text(size = 12),
+        legend.title = element_blank(),
+        legend.key.width = unit(0.9, 'cm'))
+
+w0wHIplot_dens
+
+w0wSIplot_dens <- ggplot(out3a %>%
+         group_by(w0, wSI, Dictator) %>%
+         mutate(`Self Interest` = 1/var(SIsim)) %>%
+         ungroup() %>%
+         select(w0, `Self Interest`, wSI, Dictator) %>%
+         distinct(),
+       aes(w0, wSI, fill = `Self Interest`))+
+  geom_tile()+
+  scale_fill_gradient2(midpoint = 117, low = '#7CB4B8', mid = 'white', high = '#57467B', name = expression(paste(1/sigma^2)))+
+  scale_y_continuous(expand = c(0, 0))+
+  scale_x_continuous(expand = c(0, 0))+
+  labs(x = expression(paste(w[0])), y = expression(paste(w[SI])))+
+  coord_cartesian(clip = 'off')+
+  facet_wrap(~Dictator)+
+  theme_dens()+
+  theme(legend.position = 'top',
+        panel.grid = element_blank(),
+        legend.text = element_text(size = 12),
+        legend.title = element_blank(),
+        legend.key.width = unit(0.9, 'cm'))
+
+w0wHIplot_dens / w0wSIplot_dens
+
+## S7 ----------------------------------------------------
 
 IDs <- unique(together_parms$ID)
 n   <- length(IDs)
@@ -1352,56 +1409,7 @@ for(i in IDs){
         legend.background = element_rect(colour = 'black'),
         legend.key.size = unit(0.55, 'cm'), legend.margin = margin(1,1,10,1))
 
-# Density Analysis  -------------------------------------------------------
-
-
-w0wHIplot_dens <- ggplot(out3a %>%
-         group_by(w0, wHI, Dictator) %>%
-         mutate(`Harmful Intent` = 1/var(HIsim)) %>%
-         ungroup() %>%
-         select(w0, `Harmful Intent`, wHI, Dictator) %>%
-         distinct(),
-       aes(w0, wHI, fill = `Harmful Intent`))+
-  geom_tile()+
-  scale_fill_gradient2(midpoint = 121, low = '#008148', mid = 'white', high = '#F85E00', name = expression(paste(1/sigma^2)))+
-  scale_y_continuous(expand = c(0, 0))+
-  scale_x_continuous(expand = c(0, 0))+
-  labs(x = expression(paste(w[0])), y = expression(paste(w[HI])))+
-  coord_cartesian(clip = 'off')+
-  facet_wrap(~Dictator)+
-  theme_dens()+
-  theme(legend.position = 'top',
-        panel.grid = element_blank(),
-        legend.text = element_text(size = 12),
-        legend.title = element_blank(),
-        legend.key.width = unit(0.9, 'cm'))
-
-w0wHIplot_dens
-
-w0wSIplot_dens <- ggplot(out3a %>%
-         group_by(w0, wSI, Dictator) %>%
-         mutate(`Self Interest` = 1/var(SIsim)) %>%
-         ungroup() %>%
-         select(w0, `Self Interest`, wSI, Dictator) %>%
-         distinct(),
-       aes(w0, wSI, fill = `Self Interest`))+
-  geom_tile()+
-  scale_fill_gradient2(midpoint = 117, low = '#7CB4B8', mid = 'white', high = '#57467B', name = expression(paste(1/sigma^2)))+
-  scale_y_continuous(expand = c(0, 0))+
-  scale_x_continuous(expand = c(0, 0))+
-  labs(x = expression(paste(w[0])), y = expression(paste(w[SI])))+
-  coord_cartesian(clip = 'off')+
-  facet_wrap(~Dictator)+
-  theme_dens()+
-  theme(legend.position = 'top',
-        panel.grid = element_blank(),
-        legend.text = element_text(size = 12),
-        legend.title = element_blank(),
-        legend.key.width = unit(0.9, 'cm'))
-
-w0wHIplot_dens / w0wSIplot_dens
-
-# Figure S7 ---------------------------------------------------------------
+## S8 ---------------------------------------------------------------
 
 set.seed(1001)
 
