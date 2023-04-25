@@ -2,7 +2,7 @@
 
 # Graphical Abstract
 
-![GraphicalAbstractD2D3Modelling.png]
+![Graphical Abstract](GraphicalAbstractD2D3Modelling.png)
 
 ## Data
 
