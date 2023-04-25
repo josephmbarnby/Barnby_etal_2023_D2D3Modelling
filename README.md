@@ -1,5 +1,9 @@
 # Barnby etal 2023 D2D3Modelling
 
+# Graphical Abstract
+
+![GraphicalAbstractD2D3Modelling.png]
+
 ## Data
 
 - data for Matlab fitting ([DRUG].csv), where DRUG = {HALO, LDOPA, PLAC}
