@@ -7,7 +7,7 @@ Below is the graphical summary and data guide to navigate the repo.
 ## Graphical Abstract
 
 
-<img src="GraphicalAbstractD2D3Modelling.png"  width="850" height="725">
+<img src="GraphicalAbstractD2D3Modelling.png"  width="425" height="375">
 
 ## Data
 
