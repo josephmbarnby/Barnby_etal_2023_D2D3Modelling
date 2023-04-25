@@ -124,7 +124,7 @@ Sess = c('LDOPA', 'HALO', 'PLAC')
 
 HBIFiles<-list()
 for (i in Sess){
-  HBI <- R.matlab::readMat(paste('HBIFit/hbi_BB_Alt',i,'.mat', sep = ''));
+  HBI <- R.matlab::readMat(paste('Matlab/HBIFit/hbi_BB_Alt',i,'.mat', sep = ''));
   HBI <- HBI$cbm[,,1]$output[,,1]
   HBIFiles[[i]] <- HBI
 }
@@ -333,7 +333,7 @@ Sess = c('LDOPA', 'HALO', 'PLAC')
 #                      ungroup () %>%
 #                      dplyr::select(decision = ret, HI = HIsim, SI = SIsim, ID, iter) %>%
 #                      mutate(HI = round(HI*100,0), SI = round(SI*100,0))
-#    write.csv(out3_subset,  paste('/Users/josephbarnby/My Drive/Dropbox/KCL/MOBS/MOBS1/ComputationalAnalysis/Data/SimulatedData/',
+#    write.csv(out3_subset,  paste('Data/',
 #                                  i,'_sim.csv', sep = ''))
 #}
 
@@ -341,7 +341,7 @@ Sess = c('LDOPA', 'HALO', 'PLAC')
 
 HBIFiles_Sim<-list()
 for (i in Sess){
-  HBI_Sim <- R.matlab::readMat(paste('HBIFit_Sim/hbi_BB_Sim',i,'.mat', sep = ''));
+  HBI_Sim <- R.matlab::readMat(paste('Matlab/HBIFit_Sim/hbi_BB_Sim',i,'.mat', sep = ''));
   HBI_Sim <- HBI_Sim$cbm[,,1]$output[,,1]
   HBIFiles_Sim[[i]] <- HBI_Sim
 }

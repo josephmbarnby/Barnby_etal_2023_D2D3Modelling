@@ -1,7 +1,7 @@
 %% Master File %%
 
 %% Load Data
-addpath('CBMCode', 'Data')
+addpath('CBMCode', 'Data', 'Matlab')
 
 %Global values
 trials = 18;
