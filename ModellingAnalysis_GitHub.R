@@ -904,6 +904,161 @@ wSIplot <- ggplot(out3a %>%
 
 wHIplot + w0plot + wSIplot
 
+## Factor analysis ---------------------------------------------------------
+
+fa_data <- together_parms %>%
+  filter(Sess != 'LDOPA') %>%
+  dplyr::select(pHI03:eta3, Sess)
+
+library(nFactors)
+ev <- eigen(cor(fa_data[,1:8])) # get eigenvalues
+ap <- parallel(subject=nrow(fa_data[,1:8]),var=ncol(fa_data[,1:8]),
+               rep=100,cent=.05)
+nS <- nScree(x=ev$values, aparallel=ap$eigen$qevpea)
+
+FA_cov <- factanal(fa_data[,1:8], factors = 3, scores = 'regression', )
+cov_df <- data.frame(matrix(as.numeric(FA_cov$loadings),
+                            attributes(FA_cov$loadings)$dim,
+                            dimnames=attributes(FA_cov$loadings)$dimnames))
+
+ggplot(cov_df %>%
+         mutate(parm = rownames(cov_df)) %>%
+         rename(`Flexibility` = Factor1, `Learning` = Factor2) %>%
+         pivot_longer(1:2, names_to = 'Factor', values_to = 'Rotation') %>%
+         filter(Rotation > 0.4 | Rotation < -0.4),
+       aes(fct_reorder(parm, Rotation), Factor, fill = Rotation))+
+  geom_tile()+
+  geom_label(aes(label = round(Rotation, 2)), size = 6, fill = 'white')+
+  scale_fill_gradient2(low = '#F85E00', mid = 'white', high = '#3E885B', midpoint = 0)+
+  scale_x_discrete(labels = rev(c(
+                              expression(paste(w['HI'])),
+                              expression(paste(eta)),
+                              expression(paste(w[0])),
+                              expression(paste(pSI[0])),
+                              expression(paste(u[Pri])),
+                              expression(paste(pHI[0])),
+                              expression(paste(u[pi]))
+                              )),
+                   expand = c(0,0)
+                              )+
+  scale_y_discrete(expand = c(0,0))+
+  coord_flip()+
+  theme_dens()+
+  theme(axis.title.y = element_blank(),
+        panel.grid = element_blank(),
+        axis.text.x = element_text(size = 16))
+
+indiv_cov <- FA_cov$scores <- FA_cov$scores %>% as.data.frame() %>% mutate(Sess = fa_data[,9], ID = rep(1:28, 2))
+
+library(caret)
+library(lattice)
+
+# Set up the train control object for CV
+train_control <- trainControl(method="repeatedcv", number=10, repeats=3)
+
+# Train the logistic regression model using caret
+model1 <- train(Sess ~ Factor1,
+               data = indiv_cov %>%
+                 mutate(Sess = ifelse(Sess == 'PLAC', 1, 2),
+                        Sess = factor(Sess)),
+               method = "glm",
+               family = "binomial",
+               trControl = train_control)
+
+model2 <- train(Sess ~ Factor1 + Factor2,
+               data = indiv_cov %>%
+                 mutate(Sess = ifelse(Sess == 'PLAC', 1, 2),
+                        Sess = factor(Sess)),
+               method = "glm",
+               family = "binomial",
+               trControl = train_control)
+
+model3 <- train(Sess ~ Factor1 + Factor2 + Factor3,
+               data = indiv_cov %>%
+                 mutate(Sess = ifelse(Sess == 'PLAC', 1, 2),
+                        Sess = factor(Sess)),
+               method = "glm",
+               family = "binomial",
+               trControl = train_control)
+
+bothModels <- resamples(list(model1 = model1, model2 = model2, model3=model3))
+summary(bothModels)
+
+# Print the model summary
+summary(model2)
+
+summary(bayes.t.test(exp(indiv_cov[,'Factor1'][indiv_cov$Sess=='HALO']),
+                     exp(indiv_cov[,'Factor1'][indiv_cov$Sess=='PLAC']),
+                     paired = T))
+summary(bayes.t.test(exp(indiv_cov[,'Factor2'][indiv_cov$Sess=='HALO']),
+                     exp(indiv_cov[,'Factor2'][indiv_cov$Sess=='PLAC']),
+                     paired = T))
+
+topP <- ggplot(FA_cov$scores, aes(fct_reorder(factor(ID), Factor1), Factor1, fill = Sess))+
+  geom_col()+
+  scale_fill_manual(values = c('#BA2D0B', '#3F88C5'), name = 'Drug')+
+  scale_colour_manual(values = c('#BA2D0B', '#3F88C5'), name = 'Drug')+
+  scale_y_continuous(breaks = c(-3, -2, -1, 0, 1, 2, 3), expand = c(0.02,0.02))+
+  coord_cartesian(ylim = c(-3, 3))+
+  geom_hline(yintercept = 0)+
+  labs(y = "Flexibility Score")+
+  theme_bw()+
+  theme(legend.position = c(0.15, 0.80),
+        text = element_text(size = 24),
+        axis.title.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.text.x = element_blank(),
+        legend.background = element_rect(colour = 'black'))+
+ggplot(FA_cov$scores, aes(Factor1, fill = Sess))+
+  geom_vline(xintercept = 0)+
+  ggdist::stat_slab(aes(thickness = after_stat(pdf*n)), scale = 2, alpha = 0.5) +
+  ggdist::stat_dotsinterval(side = "bottom", scale = 2) +
+  scale_fill_manual(values = c('#BA2D0B', '#3F88C5'), name = 'Drug')+
+  scale_colour_manual(values = c('#BA2D0B', '#3F88C5'), name = 'Drug')+
+  labs(x = "")+
+  coord_flip(ylim = c(-3, 3))+
+  scale_y_continuous(breaks = c(-3, -2, -1, 0, 1, 2, 3), expand = c(0,0))+
+  theme_bw()+
+  theme(text = element_text(size = 24),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text = element_blank(),
+        legend.position = 'none') &
+  patchwork::plot_layout(widths = c(1, 0.25))
+
+bottomP <- ggplot(FA_cov$scores, aes(fct_reorder(factor(ID), Factor2), Factor2, fill = Sess))+
+  geom_col()+
+  scale_fill_manual(values = c('#BA2D0B', '#3F88C5'), name = 'Drug')+
+  scale_colour_manual(values = c('#BA2D0B', '#3F88C5'), name = 'Drug')+
+  scale_y_continuous(breaks = c(-3, -2, -1, 0, 1, 2, 3), expand = c(0,0))+
+  coord_cartesian(ylim = c(-3, 3))+
+  geom_hline(yintercept = 0)+
+  labs(y = "Learning Score")+
+  theme_bw()+
+  theme(legend.position = 'none',
+        text = element_text(size = 24),
+        axis.title.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.text.x = element_blank(),
+        legend.background = element_rect(colour = 'black'))+
+ggplot(FA_cov$scores, aes(Factor2, fill = Sess))+
+  geom_vline(xintercept = 0)+
+  ggdist::stat_slab(aes(thickness = after_stat(pdf*n)), scale = 1, alpha = 0.5) +
+  ggdist::stat_dotsinterval(side = "bottom", scale = 1) +
+  scale_fill_manual(values = c('#BA2D0B', '#3F88C5'), name = 'Drug')+
+  scale_colour_manual(values = c('#BA2D0B', '#3F88C5'), name = 'Drug')+
+  labs(x = "")+
+  coord_flip(xlim = c(-3, 3))+
+  scale_x_continuous(breaks = c(-3, -2, -1, 0, 1, 2, 3), expand = c(0,0))+
+  theme_bw()+
+  theme(axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text = element_blank(),
+        legend.position = 'none') &
+patchwork::plot_layout(widths = c(1, 0.25))
+bottomP
+topP/bottomP
+
 ## Coupling analysis -------------------------------------------------------
 
 genOut$residHI  <- summary(lme4::lmer(HIsim  ~ Dictator + (1|Sess), data = genOut))[[16]] %>% as.vector()
@@ -1458,4 +1613,8 @@ ggplot(FuPredHalo,
   theme_dens()+
   theme(strip.background = element_blank())
 
+## S9 ----------------------------------------------------------------------
 
+plotnScree(nS)
+
+dotplot(bothModels)
