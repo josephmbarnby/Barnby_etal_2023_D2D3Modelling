@@ -824,6 +824,11 @@ summary(lm(scale(`Harmful Intent`) ~ wHI * Dictator, data = modFlex2))
 confint(lm(scale(`Harmful Intent`) ~ wHI * Dictator, data = modFlex2))
 effectsize::effectsize(lm(`Harmful Intent` ~ wHI * Dictator, data = modFlex2))
 
+#wHI * Dictator interaction on HI
+summary(lm(scale(HIsim) ~ wHI * Dictator, data = out3a))
+confint(lm(scale(HIsim) ~ wHI * Dictator, data = out3a))
+effectsize::effectsize(lm(scale(HIsim) ~ wHI * Dictator, data = out3a))
+
 #Plot
 wHIplot <- ggplot(out3a %>%
          group_by(wHI) %>%
@@ -1058,6 +1063,30 @@ ggplot(FA_cov$scores, aes(Factor2, fill = Sess))+
 patchwork::plot_layout(widths = c(1, 0.25))
 bottomP
 topP/bottomP
+
+#Area Under the Curve
+library(pROC)
+ctrl <- trainControl(method="cv",
+                     summaryFunction=twoClassSummary,
+                     classProbs=T,
+                     savePredictions = T)
+rfFit <- train(Sess ~ Factor1+Factor2,
+               data=indiv_cov %>%
+                 mutate(Sess = factor(Sess)),
+               method="rf", preProc=c("center", "scale"),
+               trControl=ctrl)
+library(plotROC)
+# Plot:
+ggplot(rfFit$pred,
+       aes(m = PLAC, d = factor(obs, levels = c("PLAC", "HALO")))) +
+  geom_roc(n.cuts=0) +
+  coord_equal() +
+  geom_abline(intercept = 0)+
+  scale_x_continuous(expand=c(0.005,0.005), breaks = c(0, .5, 1), labels = c(0, '.5', 1))+
+  scale_y_continuous(expand=c(0.005,0.005), breaks = c(0, .5, 1), labels = c(0, '.5', 1))+
+  labs(x = 'Specificity', y = 'Sensitivity')+
+  theme_dens()+
+  theme(text = element_text(size = 20))
 
 ## Coupling analysis -------------------------------------------------------
 
