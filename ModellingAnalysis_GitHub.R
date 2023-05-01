@@ -955,6 +955,14 @@ ggplot(cov_df %>%
 
 indiv_cov <- FA_cov$scores <- FA_cov$scores %>% as.data.frame() %>% mutate(Sess = fa_data[,9], ID = rep(1:28, 2))
 
+ggplot(indiv_cov, aes(Factor1, Factor2, fill = Sess))+
+  geom_line(aes(group = ID), alpha = 0.5, colour = 'grey')+
+  geom_jitter(shape = 21, size = 2)+
+  labs(x = 'Flexibility', y = 'Learning')+
+  scale_fill_manual(values = c('#BA2D0B', '#3F88C5'))+
+  #geom_density2d(aes(color = Sess), alpha = 0.5)+
+  theme_dens()
+
 library(caret)
 library(lattice)
 
@@ -992,6 +1000,16 @@ summary(bothModels)
 # Print the model summary
 summary(model2)
 
+#check confidence intervals of individual estimates
+model2_indiv <- glm(Sess ~ Factor1 + Factor2,
+                    data = indiv_cov %>%
+                    mutate(Sess = ifelse(Sess == 'PLAC', -0.5, 0.5),
+                           Sess = factor(Sess)),
+                    family = 'binomial')
+summary(model2_indiv)
+confint(model2_indiv)
+
+#Ttest
 summary(bayes.t.test(exp(indiv_cov[,'Factor1'][indiv_cov$Sess=='HALO']),
                      exp(indiv_cov[,'Factor1'][indiv_cov$Sess=='PLAC']),
                      paired = T))
@@ -999,6 +1017,7 @@ summary(bayes.t.test(exp(indiv_cov[,'Factor2'][indiv_cov$Sess=='HALO']),
                      exp(indiv_cov[,'Factor2'][indiv_cov$Sess=='PLAC']),
                      paired = T))
 
+#plots
 topP <- ggplot(FA_cov$scores, aes(fct_reorder(factor(ID), Factor1), Factor1, fill = Sess))+
   geom_col()+
   scale_fill_manual(values = c('#BA2D0B', '#3F88C5'), name = 'Drug')+
@@ -1070,16 +1089,17 @@ ctrl <- trainControl(method="cv",
                      summaryFunction=twoClassSummary,
                      classProbs=T,
                      savePredictions = T)
-rfFit <- train(Sess ~ Factor1+Factor2,
+rfFitB <- train(Sess ~ Factor1+Factor2,
                data=indiv_cov %>%
                  mutate(Sess = factor(Sess)),
                method="rf", preProc=c("center", "scale"),
                trControl=ctrl)
+
 library(plotROC)
 # Plot:
-ggplot(rfFit$pred,
+ggplot(rfFitB$pred,
        aes(m = PLAC, d = factor(obs, levels = c("PLAC", "HALO")))) +
-  geom_roc(n.cuts=0) +
+  geom_roc(n.cuts=0, colour = 'black') +
   coord_equal() +
   geom_abline(intercept = 0)+
   scale_x_continuous(expand=c(0.005,0.005), breaks = c(0, .5, 1), labels = c(0, '.5', 1))+
