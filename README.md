@@ -1,9 +1,5 @@
 # Barnby etal 2023 D2D3 Modelling
 
-Repository for this paper: 
-
-Below is the graphical summary and data guide to navigate the repo.
-
 <p>
     <a href="https://twitter.com/intent/follow?screen_name=joebarnby">
         <img src="https://badgen.net/badge/icon/twitter?icon=twitter&label"
@@ -21,6 +17,10 @@ Below is the graphical summary and data guide to navigate the repo.
         <img src="https://badgen.net/gitlab/last-commit/gitlab-org/gitlab-development-kit"
             alt="Commit"></a>     
 </p>
+
+Repository for this paper: 
+
+Below is the graphical summary and data guide to navigate the repo.
 
 ## Graphical Abstract
 
