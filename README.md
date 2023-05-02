@@ -15,7 +15,7 @@ Below is the graphical summary and data guide to navigate the repo.
         <img src="https://badgen.net/badge/:Release/:V1.02/:red?icon="
             alt="Release"></a>
     <a>
-        <img src="https://badgen.net/badge/:Checks/:Succcess/:green?icon="
+        <img src="https://badgen.net/badge/:Checks/:Success/:green?icon="
             alt="Checks"></a>         
     <a>
         <img src="https://badgen.net/gitlab/last-commit/gitlab-org/gitlab-development-kit"
