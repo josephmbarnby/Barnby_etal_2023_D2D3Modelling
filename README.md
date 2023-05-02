@@ -4,19 +4,20 @@
     <a href="https://twitter.com/intent/follow?screen_name=joebarnby">
         <img src="https://badgen.net/badge/icon/twitter?icon=twitter&label"
             alt="follow on Twitter"></a>
+    
     <a href="https://mastodon.online/@JoeBarnby">
         <img src="https://badgen.net/badge/icon/mastodon?icon=mastodon&label"
             alt="follow on Mastodon"></a>    
     <a>
-        <img src="https://badgen.net/badge/:Release/:V1.02/:red?icon="
+        <img src="https://badgen.net/badge/Release/:V1.02/red?icon="
             alt="Release"></a>
     <a>
-        <img src="https://badgen.net/badge/:Checks/:Success/:green?icon="
+        <img src="https://badgen.net/badge/Checks/Success/green?icon="
             alt="Checks"></a>   
 </p>
 <p>  
     <a href="https://soccrlab.shinyapps.io/MentalStateInferenceModel/">
-        <img src="https://badgen.net/badge/:Interactive Model/:Click Here/:orange?icon="
+        <img src="https://badgen.net/badge/Interactive Model/Click Here/orange?icon="
             alt="Access the Model"></a>    
 </p>
 
