@@ -13,7 +13,8 @@
     <a>
         <img src="https://badgen.net/badge/:Checks/:Success/:green?icon="
             alt="Checks"></a>  
-            
+       
+    <a>
     <a href="https://soccrlab.shinyapps.io/MentalStateInferenceModel/">
         <img src="https://badgen.net/badge/:Interactive Model/:Click here/:orange?icon="
             alt="Access the Model"></a>     
