@@ -12,12 +12,12 @@
             alt="Release"></a>
     <a>
         <img src="https://badgen.net/badge/:Checks/:Success/:green?icon="
-            alt="Checks"></a>  
-       
-    <a>
+            alt="Checks"></a>   
+</p>
+<p>  
     <a href="https://soccrlab.shinyapps.io/MentalStateInferenceModel/">
-        <img src="https://badgen.net/badge/:Interactive Model/:Click here/:orange?icon="
-            alt="Access the Model"></a>     
+        <img src="https://badgen.net/badge/:Interactive Model/:Click Here/:orange?icon="
+            alt="Access the Model"></a>    
 </p>
 
 Repository for this paper: 
