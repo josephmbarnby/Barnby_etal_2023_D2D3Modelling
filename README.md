@@ -19,10 +19,6 @@
             alt="Access the Model"></a>     
 </p>
 
-    <a>
-        <img src="https://badgen.net/gitlab/last-commit/gitlab-org/gitlab-development-kit"
-            alt="Commit"></a>  
-
 Repository for this paper: 
 
 Below is the graphical summary and data guide to navigate the repo.
