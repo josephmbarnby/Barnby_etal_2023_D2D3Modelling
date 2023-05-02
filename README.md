@@ -10,7 +10,7 @@ Below is the graphical summary and data guide to navigate the repo.
 
 ## Model 
 
-You can play around with and simulate outcomes from the model included in this paper [!here](https://soccrlab.shinyapps.io/MentalStateInferenceModel/)
+You can play around with and simulate outcomes from the model included in this paper [here](https://soccrlab.shinyapps.io/MentalStateInferenceModel/)
 
 ## Data
 
