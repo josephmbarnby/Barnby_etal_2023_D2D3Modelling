@@ -4,7 +4,6 @@
     <a href="https://twitter.com/intent/follow?screen_name=joebarnby">
         <img src="https://badgen.net/badge/icon/twitter?icon=twitter&label"
             alt="follow on Twitter"></a>
-    
     <a href="https://mastodon.online/@JoeBarnby">
         <img src="https://badgen.net/badge/icon/mastodon?icon=mastodon&label"
             alt="follow on Mastodon"></a>    
