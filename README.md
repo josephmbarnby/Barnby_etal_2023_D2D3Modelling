@@ -4,6 +4,24 @@ Repository for this paper:
 
 Below is the graphical summary and data guide to navigate the repo.
 
+<p>
+    <a href="https://twitter.com/intent/follow?screen_name=joebarnby">
+        <img src="https://badgen.net/badge/icon/twitter?icon=twitter&label"
+            alt="follow on Twitter"></a>
+    <a href="https://mastodon.online/@JoeBarnby">
+        <img src="https://badgen.net/badge/icon/mastodon?icon=mastodon&label"
+            alt="follow on Mastodon"></a>    
+    <a>
+        <img src="https://badgen.net/badge/:Release/:V1.02/:red?icon="
+            alt="Release"></a>
+    <a>
+        <img src="https://badgen.net/badge/:Checks/:Succcess/:green?icon="
+            alt="Checks"></a>         
+    <a>
+        <img src="https://badgen.net/gitlab/last-commit/gitlab-org/gitlab-development-kit"
+            alt="Commit"></a>     
+</p>
+
 ## Graphical Abstract
 
 <img src="GraphicalAbstractD2D3Modelling.png"  width="637" height="502">
