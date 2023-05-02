@@ -6,8 +6,11 @@ Below is the graphical summary and data guide to navigate the repo.
 
 ## Graphical Abstract
 
-
 <img src="GraphicalAbstractD2D3Modelling.png"  width="637" height="502">
+
+## Model 
+
+You can play around with and simulate outcomes from the model included in this paper [!here](https://soccrlab.shinyapps.io/MentalStateInferenceModel/)
 
 ## Data
 
