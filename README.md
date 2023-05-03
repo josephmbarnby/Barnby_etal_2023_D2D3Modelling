@@ -20,7 +20,7 @@
             alt="Access the Model"></a>    
 </p>
 
-Repository for this paper: 
+Repository for this paper: https://www.biorxiv.org/content/10.1101/2023.05.02.539031v2
 
 Below is the graphical summary and data guide to navigate the repo.
 
