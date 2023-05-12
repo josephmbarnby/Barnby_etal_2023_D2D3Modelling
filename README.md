@@ -8,7 +8,7 @@
         <img src="https://badgen.net/badge/icon/mastodon?icon=mastodon&label"
             alt="follow on Mastodon"></a>    
     <a>
-        <img src="https://badgen.net/badge/Release/:V1.02/red?icon="
+        <img src="https://badgen.net/badge/Release/:V1.03/red?icon="
             alt="Release"></a>
     <a>
         <img src="https://badgen.net/badge/Checks/Success/green?icon="
